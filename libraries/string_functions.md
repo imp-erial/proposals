@@ -71,9 +71,12 @@ When provided a list, this is shorthand for a `join` with the joiner set as `"$n
 When provided a string, it should dedent the string based on the following algorithm:
 
 1. If the first line is all spaces (`/\A\s*$/u`), remove it; otherwise, keep it but do not process it.
-2. Extract the spacing at the beginning every (`/^(?P<sp>\s+)/u`).
-3. Keep the shortest line (in terms of number of characters) as `sp`.
-4. Remove that spacing from every line in the string (`s/^\k<sp>//gu`).
+2. If the last line is all spaces (`/^\s*\z/u`), keep it as an empty line.
+3. Do not process any empty line (`/^$/`).
+4. Extract the spacing at the beginning of every line (`/^(?P<sp>\s+)/u`), hereafter called indentation.
+5. Keep the shortest `sp` (in terms of number of characters) as `sp`.
+6. Remove that spacing from every line in the string (`s/^\k<sp>//gu`).
+7. Print a warning if some line has indentation that is not the same as the selected string.
 
 ### Usage ###
 
