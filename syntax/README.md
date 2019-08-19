@@ -4,8 +4,10 @@ Proposals for adding to or altering the syntax specification. Any proposal that 
 
 ## Current proposals ##
 
-| Status | Proposal               | Description                               |
-| ------ | ---------------------- | ----------------------------------------- |
-| Early  | [meta][1]              | Meta-programming type                     |
+|  Status  | Proposal               | Description                             |
+| -------- | ---------------------- | --------------------------------------- |
+| Early    | [extern][2]            | Hide structs from implicit use          |
+| Rejected | [meta][1]              | Meta-programming type                   |
 
-[1]: /core/meta
+[1]: /syntax/meta.md
+[2]: /syntax/extern.md

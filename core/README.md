@@ -6,6 +6,9 @@ Proposals for changes to the core library such as changes to existing built-in t
 
 | Status | Proposal               | Description                               |
 | ------ | ---------------------- | ----------------------------------------- |
+| Early  | [meta][2]              | Meta-programming type.                    |
 | Draft  | [Number forms][1]      | Stringification for number forms.         |
 
-[1]: /core/number_forms
+[1]: /core/number_forms.md
+[2]: /core/meta.md
+
