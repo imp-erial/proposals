@@ -23,5 +23,5 @@ For the most part, any valid GFM Markdown will be accepted but keep the followin
 * **bold** indicates a literal string that is meant to be written as-is, such as a keyword.
 * <u>underline</u> indicates a named variable to be replaced with something when actually writing RPL. For instance, an argument to a CLI program like gz <u>file</u>
 * CAPS can be used similarly to underline but for when it's in a code block.
-* Please use <pre>\`\`\`rpl</pre> to start code blocks for RPL, even though GitHub doesn't (and likely never will) format them. Do not use indentation for any codeblocks.
+* Please use <tt>\`\`\`rpl</tt> to start code blocks for RPL, even though GitHub doesn't (and likely never will) format them. Do not use indentation for any codeblocks.
 
