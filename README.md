@@ -9,13 +9,14 @@ Sections are a rough attempt at organization.
 * [Core](core)
 * [Syntax](syntax)
 * [Libraries](libraries)
+* [Standard library](std)
 
 
 ## How do I make a new proposal? ##
 
 Do you have an idea but aren't confident with forming a proper proposal? You may open an [issue](https://github.com/imp-erial/imperial/issues) instead.
 
-For those of you who have a solid idea and are comfortable with making a formal proposal, basically just make a PR with the markdown for it. It's fine to commit drafts and such here but only proposals with the status `Final` will be reviewed for acceptance.
+For those of you who have a solid idea and are comfortable with making a formal proposal, basically just make a PR with the markdown for it. It's fine to commit and make PRs for drafts and such here but only proposals with the status `Final` will be reviewed for acceptance into the development plan for Imperial.
 
 For the most part, any valid GFM Markdown will be accepted but keep the following points in mind:
 
