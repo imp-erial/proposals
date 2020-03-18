@@ -49,7 +49,7 @@ ptr {
 }
 ```
 
-If we had the data at $00abcd as `50 02 34 55 a1 9d 00` then the numeric value of theres `ptr`s would be $02009d
+If we had the data at $00abcd as `50 02 34 55 a1 9d 00` then the numeric value of these `ptr`s would be $02009d
 
 In the case that endianness should be specifiable, it must be the same as `number`'s *endian* key, so that the child `number`s may inherit it.
 
