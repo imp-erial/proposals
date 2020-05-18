@@ -7,9 +7,11 @@ Proposals for changes to the core library such as changes to existing built-in t
 
 | Status | Proposal               | Description                               |
 | ------ | ---------------------- | ----------------------------------------- |
+| Draft  | [list][3]              | list basic type.                          |
 | Early  | [meta][2]              | Meta-programming type.                    |
 | Draft  | [Number forms][1]      | Stringification for number forms.         |
 
 [1]: number_forms.md
 [2]: meta.md
+[3]: list.md
 
