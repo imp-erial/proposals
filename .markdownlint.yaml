@@ -2,5 +2,6 @@
 MD004: false # Sublime-style sublisting, * then - then +
 MD012: false
 MD013: false # use word wrap
+MD024: false # unless there's a good fix for anchoring while keeping things consistent
 MD026: false
 MD033: false
