@@ -143,7 +143,7 @@ static Grandparent {
 }
 ```
 
-In order to descend, one can use this to select a known parent and use further substruct subscriptors to access those, such as in *nephew*, or use relative references described in the [Special references](#Special_references) section.
+In order to descend, one can use this to select a known parent and use further substruct subscriptors to access those, such as in *nephew*, or use relative references described in the [Special references](#special-references) section.
 
 ### Referencing dynamic data ###
 
