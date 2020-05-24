@@ -190,7 +190,56 @@ In this example, Index is used as a type in Headers.xindexes, which causes Index
 
 ## Link structure ##
 
-TODO:
+For the link structure it's important for the system to know all members of a reference set. For instance in the following:
+
+```rpl
+# A.a <- B.a && A.a <- C.b
+static A { a: 1 }
+static B { a: @A.a }
+static C { a: @A.a }
+
+# D.a <- E.a <- F.a
+static D { a: 1 }
+static E { a: @D.a }
+static F { a: @E.a }
+```
+
+While the normalization system would potentially treat these cases differently, the link system will group treat both groups in the same manner, all three keys of that group holds the same data.
+
+When a member of a group has its value changed, all group members' caches must be invalidated. There doesn't necessarily have to be an origin point insofar as there may be cycles:
+
+```rpl
+bin A { data: @C }
+bin B { data: @A }
+bin C { data: @B }
+```
+
+Cycles are almost always an indication of an improper description, but because a binary is another source of data which is linked into this cycle, the cycle itself doesn't actually matter. At most, it should cause a warning. However, a cycle should cause an error if the normalized interpretation of the target data does not match what it was set to, after the data is propagated through the cycle. For instance:
+
+```rpl
+string A { data: @C }
+number B { data: number(@A) }
+size   C { data: @B }
+```
+
+If we set A to "10", B then casts this to the number 10, C interprets that as the size of 10 bytes, and A requests the string value of C which is "10 bytes". Since "10" != "10 bytes", this causes an error. While it would be ideal if the system stabalized at "10 bytes" (maybe not in this specific case, since that can't be cast to a number), this runs up against the [halting problem](https://en.wikipedia.org/wiki/Halting_problem) and cannot be done effectively.
+
+The established links must be visible for two primary reasons: if a key that is not a reference itself but has references to it must pull data from one of those references, it must be able to; and in Imperial Exchange it must be able to determine what data it can instruct other structs to not export if exporting that data is optional to it. This latter case is about this sort of description:
+
+```rpl
+data Header {
+    xsomething: [number, 4]
+    xwidth: [number, 2]
+    xheight: [number, 2]
+}
+
+graphic Image {
+    dimensions: [@Header.xwidth, @Header.xheight]
+    pixel: 0bw  # 1 bpp, on is black
+}
+```
+
+In this example, Exchange should export `Image.png` with the graphical information, but `Header.json` should only contain xsomething, not xwidth or xheight, because those two are necessarily exported by Image and can be inferred from that export. This makes it so that when reimporting that data after editing it, one does not need to edit `Header.json` as well when the width or height changes.
 
 
 ## Special references ##
