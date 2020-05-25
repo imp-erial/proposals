@@ -32,34 +32,6 @@ However this document is for discussing them as a struct, rather than their synt
 
 If *type* is strictly defined as a serializable type, the list is also serializable. Thus it can be placed as a child of a serializable only in that case. It assumes all the elements are serialized sequentially, thus they must have a deterministic *size* when the list is meant to be un/serialized directly.
 
-By default, when a list is un/serialized, it assumes there is no padding between the elements. However, there should be a way to control padding in the future, but this needs more research.
-
-
-## As a context ##
-
-List contexts are a bit similar to `bin` in that one can (sort of) think of `bin` as a list context with single bytes as the type. This allows one to process the contents of a (usually) 1D list into a more structured form.
-
-TODO: reasoning, use, supporting examples
-
-```rpl
-list {
-    # Imagine these were pulled from something external!
-    data: [1, q, 3, a, b, c]
-
-    number Length1 {}
-    list RolledUp1 {
-        length: @{Length1}
-        type: string
-    }
-
-    number Length2 {}
-    list RolledUp2 {
-        length: @{Length2}
-        type: string
-    }
-}
-```
-
 
 ## Formatting ##
 
@@ -84,3 +56,31 @@ While these options have no business being specified in the structure, they coul
   - After exceeding or in order to stay within a certain line length.
   - After a certain number of elements.
   - Given the elements can split internally, whether or not they should.
+
+
+## Future ##
+
+### As a context ###
+
+This would need a separate prosal with valid, real-life use cases, but the following is an idea of how it could work.
+
+List contexts are a bit similar to `bin` in that one can (sort of) think of `bin` as a list context with single bytes as the type. This allows one to process the contents of a (usually) 1D list into a more structured form.
+
+```rpl
+list {
+    # Imagine these were pulled from something external!
+    data: [1, q, 3, a, b, c]
+
+    number Length1 {}
+    list RolledUp1 {
+        length: @{Length1}
+        type: string
+    }
+
+    number Length2 {}
+    list RolledUp2 {
+        length: @{Length2}
+        type: string
+    }
+}
+```
