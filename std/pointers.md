@@ -1,8 +1,8 @@
 # Pointers #
 
-Pointers are addresses to a space in the ROM (for example) which contains some data you want to get at. It's essentially what you put in the *base* key, but in order to make an RPL file more dynamic, we can instead extract the address from where it's mentioned in the ROM. For example:
+Pointers are addresses to a space in the ROM (for example) which contains some data you want to get at. It's essentially what you put in the *base* key, but in order to make an MPRL file more dynamic, we can instead extract the address from where it's mentioned in the ROM. For example:
 
-```rpl
+```mprl
 static Level01 {
     data Metadata {
         base: $0240dd
@@ -34,7 +34,7 @@ It could be a binary context that can just be read as a number.
 
 There are two potential forms, and it's possible to allow both:
 
-```rpl
+```mprl
 # With substructs
 ptr {
     base: $00abcd
@@ -58,7 +58,7 @@ In the case that endianness should be specifiable, it must be the same as `numbe
 
 Eventually it would be ideal to be able to parse assembler code and extract the parts of the pointer from the code as variable elements such as:
 
-```rpl
+```mprl
 ptr {
     base: $00abcd
     extract: asm(``

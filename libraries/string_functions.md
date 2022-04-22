@@ -15,11 +15,11 @@ This is a `list` type.
 
 ### Usage ###
 
-```rpl
+```mprl
 split[STRING, SUBSTRING_1, ...]
 ```
 
-```rpl
+```mprl
 split {
     data: STRING
     on: SUBSTRING
@@ -29,7 +29,7 @@ split {
 
 ### Example ###
 
-```rpl
+```mprl
 static {
     split: split["a,b.c", ",", "."]
     result: [a, b, c]
@@ -44,11 +44,11 @@ If *data* is a single string, it should likely still accept it and simply not ad
 
 ### Usage ###
 
-```rpl
+```mprl
 join[[STRING_1, ...], JOINER]
 ```
 
-```rpl
+```mprl
 join {
     data: [STRING_1, ...]
     with: JOINER
@@ -57,7 +57,7 @@ join {
 
 ### Example ###
 
-```rpl
+```mprl
 static {
     join: join[[a, b, c], -]
     result: "a-b-c"
@@ -80,11 +80,11 @@ When provided a string, it should dedent the string based on the following algor
 
 ### Usage ###
 
-```rpl
+```mprl
 doc[STRING_1, ...]
 ```
 
-```rpl
+```mprl
 doc {
     data: [STRING_1, ...]
 }
@@ -92,7 +92,7 @@ doc {
 
 ### Examples ###
 
-```rpl
+```mprl
 static {
     doc: doc[
         It's raining; it's pouring.
@@ -108,7 +108,7 @@ static {
 }
 ```
 
-```rpl
+```mprl
 static {
     doc: doc(``
         A wonderful bird is the pelican,

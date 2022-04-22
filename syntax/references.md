@@ -46,7 +46,7 @@ At this point it may be unclear what some of these constructions actually do. Th
 
 One can store data in a `static` struct and have other structs reference it by name. This is similar to `const`s in other languages. This also demonstrates the key subscriptor.
 
-```rpl
+```mprl
 static Const {
     namesize: size(10 bytes)
 }
@@ -64,7 +64,7 @@ Thus both Name1 and Name2 have a size of 10 bytes.
 
 ### List index subscriptor ###
 
-```rpl
+```mprl
 static Const {
     names: [Lorem, Ipsum]
 }
@@ -78,7 +78,7 @@ string Name1 {
 
 In normal substruct subscription, we start from the initial struct, check all its children for that name, and if that fails, enter any nameless substructs and check those for that name, and continue until it's found or there are no more nameless substructs (in which case the reference fails).
 
-```rpl
+```mprl
 static Example {
     static Child1 {
         a: 1
@@ -100,7 +100,7 @@ static {
 
 If there is no base, it first checks the substructs of the struct that this reference is inside of, and if none of those match, it then checks the parent's substructs, and so forth. It does not descend into substructs.
 
-```rpl
+```mprl
 static Grandparent {
     name: Gertrude
 
@@ -149,7 +149,7 @@ In order to descend, one can use this to select a known parent and use further s
 
 References can act as a way to tie two or more keys together so that their values must always be equivalent in a way that respects their keys' normalization schemes. For example:
 
-```rpl
+```mprl
 number A {
     size: 4
 }
@@ -165,7 +165,7 @@ bin B {
 
 References can also use a struct as a type and act as a means of propagating cloning, such as in this example:
 
-```rpl
+```mprl
 data Header {
     xcount: [number, 2]
     xindexes: [@Index, @this.xcount]
@@ -192,7 +192,7 @@ In this example, Index is used as a type in Headers.xindexes, which causes Index
 
 For the link structure it's important for the system to know all members of a reference set. For instance in the following:
 
-```rpl
+```mprl
 # A.a <- B.a && A.a <- C.b
 static A { a: 1 }
 static B { a: @A.a }
@@ -208,7 +208,7 @@ While the normalization system would potentially treat these cases differently, 
 
 When a member of a group has its value changed, all group members' caches must be invalidated. There doesn't necessarily have to be an origin point insofar as there may be cycles:
 
-```rpl
+```mprl
 bin A { data: @C }
 bin B { data: @A }
 bin C { data: @B }
@@ -216,7 +216,7 @@ bin C { data: @B }
 
 Cycles are almost always an indication of an improper description, but because a binary is another source of data which is linked into this cycle, the cycle itself doesn't actually matter. At most, it should cause a warning. However, a cycle should cause an error if the normalized interpretation of the target data does not match what it was set to, after the data is propagated through the cycle. For instance:
 
-```rpl
+```mprl
 string A { data: @C }
 number B { data: number(@A) }
 size   C { data: @B }
@@ -226,7 +226,7 @@ If we set A to "10", B then casts this to the number 10, C interprets that as th
 
 The established links must be visible for two primary reasons: if a key that is not a reference itself but has references to it must pull data from one of those references, it must be able to; and in Imperial Exchange it must be able to determine what data it can instruct other structs to not export if exporting that data is optional to it. This latter case is about this sort of description:
 
-```rpl
+```mprl
 data Header {
     xsomething: [number, 4]
     xwidth: [number, 2]

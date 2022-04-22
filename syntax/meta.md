@@ -1,7 +1,7 @@
 # meta #
 The meta-programming type, allowing you to make a new type based on an existing type.
 
-```rpl
+```mprl
 meta TYPE NEW_TYPE {
     # keys...
 }
@@ -21,7 +21,7 @@ Following examples will use `@{}` to stand out.
 
 ## Simple example: intlist ##
 
-```rpl
+```mprl
 meta list intlist {
     type: number { size: 4 }
     length: @{}
@@ -36,7 +36,7 @@ To pull out a list of 8 uint_32s
 
 ## Complex example: string strip ##
 
-```rpl
+```mprl
 meta string strip {
     {
         bin: @{}[0].bin
