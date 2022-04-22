@@ -22,6 +22,7 @@ For meta-programming, these registrations are suggested:
 * keys
 * defaults
 * children
+* top
 * basic
 * help
 
@@ -62,24 +63,41 @@ number ShortByDefault {
 
 ## children ##
 
-This allows for both moving substructs and imposing restrictions on allowed substructs.
+This allows for imposing restrictions on allowable substructs. It cannot add substructs which would otherwise be disallowed by the type, though.
 
-It has a key _into_ which contains a reference to the structure under the parent of this meta substruct. This only applies to substructs defined inside a struct which uses this struct as its type. It defaults to the parent.
-
-It has a key _allow_ which is a list of allowable substruct types in the target of _into_.
+It has a key _allow_ which is a list of allowable substruct types.
 
 ### Example ###
 
 ```mprl
-bin MoveMe {
-    number Something { size: 2 }
-    number SomethingElse { size: 2 }
-    zip Data {
-        size: expand
-    }
+zip MyFiles {
     meta children {
-        into: @parent{Data}
         allow: [string, png]
+    }
+}
+```
+
+## top ##
+
+Redefine what the "top" struct is, of the substructs.
+
+At a technical level, this acts similarly to removing the name from the actual top-level struct and putting that name onto the target substruct. However, this also has some differences when using the meta'd struct as a type.
+
+When this struct is used as a type, all keys (except basing keys) and children are moved into the top struct. If necessary, options can be designed for allowing users to select which keys and children move, and the current design can simply be the default.
+
+Relative references within the meta'd struct adhere to the defined hierarchy. But child subscription references outside go to the new top, instead. This is explained by how substruct referencing works, normally (see technical description above as well as the [references proposal](/syntax/references.md)).
+
+### Example ###
+
+```mprl
+bin SizedZip {
+    number NotSize { size: 2 }
+    number Size { size: 2 }
+    zip Data {
+        size: @parent{Size}
+    }
+    meta top {
+        is: @parent{Data}
     }
 }
 ```
