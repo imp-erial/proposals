@@ -5,7 +5,7 @@ The meta-programming type, allowing you to:
 * Define new keys for use in an existing struct.
 * Extend management of a struct in tool-specific ways.
 
-```rpl
+```mprl
 TYPE NAME {
     # keys ...
 
@@ -21,6 +21,7 @@ For meta-programming, these registrations are suggested:
 
 * keys
 * defaults
+* children
 * basic
 * help
 
@@ -34,7 +35,7 @@ The keys can be defined with a literal of the type name or as a struct with keys
 
 ### Example ###
 
-```rpl
+```mprl
 number {
     a: 1
     size: 4 bytes
@@ -51,10 +52,34 @@ This allows for defining defaults for new keys and overriding defaults for exist
 
 ### Example ###
 
-```rpl
+```mprl
 number ShortByDefault {
     meta defaults {
         size: 2 bytes
+    }
+}
+```
+
+## children ##
+
+This allows for both moving substructs and imposing restrictions on allowed substructs.
+
+It has a key _into_ which contains a reference to the structure under the parent of this meta substruct. This only applies to substructs defined inside a struct which uses this struct as its type. It defaults to the parent.
+
+It has a key _allow_ which is a list of allowable substruct types in the target of _into_.
+
+### Example ###
+
+```mprl
+bin MoveMe {
+    number Something { size: 2 }
+    number SomethingElse { size: 2 }
+    zip Data {
+        size: expand
+    }
+    meta children {
+        into: @parent{Data}
+        allow: [string, png]
     }
 }
 ```
@@ -71,7 +96,7 @@ The system will scan any declared basics in order and pick the first one whose t
 
 ### Example ###
 
-```rpl
+```mprl
 meta basic {
     input: string
     output {
@@ -87,7 +112,7 @@ This is a proposed method of handling dynamic usage if it's ever required. I str
 
 Output may also accept a substruct _key_ which allows for dynamic naming of keys. However, existence and type assertions will still take place, so the key name must exist.
 
-```rpl
+```mprl
 meta basic {
     input: list { type: [literal, any] }
     output {
@@ -101,7 +126,7 @@ meta basic {
 
 Similarly, the same can be done for substructs with _substruct_.
 
-```rpl
+```mprl
 meta basic {
     input:
     output {
@@ -124,7 +149,7 @@ For information on substructs, define a `meta help` in that substruct.
 
 ### Example ###
 
-```rpl
+```mprl
 meta help {
     name: Full name of the struct
     summary: Short description of what it's for
@@ -140,5 +165,5 @@ meta help {
 ## Other properties and notes ##
 
 * This is a proposal to replace syntax/meta without altering the syntax. It covers all the issues it had.
-* `@parent` refers to the parent of where the meta struct is defined and not where it's used. `@back` could possibly refer to where it was used.
+* When used as a type, `@this` refers to the struct which is using it, and thus `@parent` refers to its parent. This seems more intuitive since most of the time these structs will be used as a type. This functionality may be part of whatever functionality instantiates this as a type, instead, though.
 * Using a meta struct in a struct does not occlude it from the scope. There must be another system to do that, which will be in a separate proposal.
