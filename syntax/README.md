@@ -7,7 +7,7 @@ Proposals for adding to or altering the syntax specification. Any proposal that 
 
 |  Status  | Proposal               | Description                             |
 | -------- | ---------------------- | --------------------------------------- |
-| Early    | [extern][2]            | Hide structs from implicit use.         |
+| Rejected | [extern][2]            | Hide structs from implicit use.         |
 | Rejected | [meta][1]              | Meta-programming type.                  |
 | Draft    | [references][3]        | References syntax and implementation.   |
 
