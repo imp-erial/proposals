@@ -28,7 +28,7 @@ However this document is for discussing them as a struct, rather than their synt
     + For example, `[string, number, number]` means a list of three elements with those types in that order, such as `["ab", 1, 2]`
   - In the future, one may specify generative grammars to represent more complex patterns of repeating types. However, these are as of yet undefined.
 
-*each* is a reference of *type* intended to be used when referencing, tying into the cloning system. That is, *type* is cloned for each entry in the list, so referencing it causes the referencer to be cloned for each entry in the list.
+*each* is an alias of *type* intended to be used when referencing, tying into the cloning system. That is, *type* is cloned for each entry in the list, so referencing it causes the referencer to be cloned for each entry in the list.
 
 ## List of serializables ##
 
