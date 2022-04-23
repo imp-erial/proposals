@@ -16,22 +16,25 @@ Lists are a core, syntactic type. The basic syntax, for reference, is:
 
 However this document is for discussing them as a struct, rather than their syntax.
 
-
 ## Keys ##
 
+* *data* (list): This is a value struct, so it has the recursive *data* key.
+  - Entries in a list are also considered its children, so children reflect this key.
 * *length* (number): Represents the number of elements in the list
 * *type*: Describes the type of each element in the list.
   - As the literal **any**, the default, this allows all types.
   - As a literal, this is a single type name.
   - As a list of literals, this restricts the length and treats this as a typed tuple.
     + For example, `[string, number, number]` means a list of three elements with those types in that order, such as `["ab", 1, 2]`
-  - In the future, one may specify generative grammars to represent more complex patterns of repeating types. However, this are as of yet undefined.
+  - In the future, one may specify generative grammars to represent more complex patterns of repeating types. However, these are as of yet undefined.
 
+*each* is a reference of *type* intended to be used when referencing, tying into the cloning system. That is, *type* is cloned for each entry in the list, so referencing it causes the referencer to be cloned for each entry in the list.
 
 ## List of serializables ##
 
 If *type* is strictly defined as a serializable type, the list is also serializable. Thus it can be placed as a child of a serializable only in that case. It assumes all the elements are serialized sequentially, thus they must have a deterministic *size* when the list is meant to be un/serialized directly.
 
+This should hold true for any linearly ordered types. Entries in a list cannot define *base*.
 
 ## Formatting ##
 
@@ -56,31 +59,3 @@ While these options have no business being specified in the structure, they coul
   - After exceeding or in order to stay within a certain line length.
   - After a certain number of elements.
   - Given the elements can split internally, whether or not they should.
-
-
-## Future ##
-
-### As a context ###
-
-This would need a separate prosal with valid, real-life use cases, but the following is an idea of how it could work.
-
-List contexts are a bit similar to `bin` in that one can (sort of) think of `bin` as a list context with single bytes as the type. This allows one to process the contents of a (usually) 1D list into a more structured form.
-
-```rpl
-list {
-    # Imagine these were pulled from something external!
-    data: [1, q, 3, a, b, c]
-
-    number Length1 {}
-    list RolledUp1 {
-        length: @{Length1}
-        type: string
-    }
-
-    number Length2 {}
-    list RolledUp2 {
-        length: @{Length2}
-        type: string
-    }
-}
-```
