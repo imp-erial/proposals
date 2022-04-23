@@ -5,7 +5,7 @@ The meta-programming type, allowing you to:
 * Define new keys for use in an existing struct.
 * Extend management of a struct in tool-specific ways.
 
-```rpl
+```mprl
 TYPE NAME {
     # keys ...
 
@@ -21,6 +21,8 @@ For meta-programming, these registrations are suggested:
 
 * keys
 * defaults
+* children
+* top
 * basic
 * help
 
@@ -34,7 +36,7 @@ The keys can be defined with a literal of the type name or as a struct with keys
 
 ### Example ###
 
-```rpl
+```mprl
 number {
     a: 1
     size: 4 bytes
@@ -51,10 +53,51 @@ This allows for defining defaults for new keys and overriding defaults for exist
 
 ### Example ###
 
-```rpl
+```mprl
 number ShortByDefault {
     meta defaults {
         size: 2 bytes
+    }
+}
+```
+
+## children ##
+
+This allows for imposing restrictions on allowable substructs. It cannot add substructs which would otherwise be disallowed by the type, though.
+
+It has a key _allow_ which is a list of allowable substruct types.
+
+### Example ###
+
+```mprl
+zip MyFiles {
+    meta children {
+        allow: [string, png]
+    }
+}
+```
+
+## top ##
+
+Redefine what the "top" struct is, of the substructs.
+
+At a technical level, this acts similarly to removing the name from the actual top-level struct and putting that name onto the target substruct. However, this also has some differences when using the meta'd struct as a type.
+
+When this struct is used as a type, all keys (except basing keys) and children are moved into the top struct. If necessary, options can be designed for allowing users to select which keys and children move, and the current design can simply be the default.
+
+Relative references within the meta'd struct adhere to the defined hierarchy. But child subscription references outside go to the new top, instead. This is explained by how substruct referencing works, normally (see technical description above as well as the [references proposal](/syntax/references.md)).
+
+### Example ###
+
+```mprl
+bin SizedZip {
+    number NotSize { size: 2 }
+    number Size { size: 2 }
+    zip Data {
+        size: @parent{Size}
+    }
+    meta top {
+        is: @parent{Data}
     }
 }
 ```
@@ -71,7 +114,7 @@ The system will scan any declared basics in order and pick the first one whose t
 
 ### Example ###
 
-```rpl
+```mprl
 meta basic {
     input: string
     output {
@@ -87,7 +130,7 @@ This is a proposed method of handling dynamic usage if it's ever required. I str
 
 Output may also accept a substruct _key_ which allows for dynamic naming of keys. However, existence and type assertions will still take place, so the key name must exist.
 
-```rpl
+```mprl
 meta basic {
     input: list { type: [literal, any] }
     output {
@@ -101,7 +144,7 @@ meta basic {
 
 Similarly, the same can be done for substructs with _substruct_.
 
-```rpl
+```mprl
 meta basic {
     input:
     output {
@@ -124,7 +167,7 @@ For information on substructs, define a `meta help` in that substruct.
 
 ### Example ###
 
-```rpl
+```mprl
 meta help {
     name: Full name of the struct
     summary: Short description of what it's for
@@ -140,5 +183,5 @@ meta help {
 ## Other properties and notes ##
 
 * This is a proposal to replace syntax/meta without altering the syntax. It covers all the issues it had.
-* `@parent` refers to the parent of where the meta struct is defined and not where it's used. `@back` could possibly refer to where it was used.
+* When used as a type, `@this` refers to the struct which is using it, and thus `@parent` refers to its parent. This seems more intuitive since most of the time these structs will be used as a type. This functionality may be part of whatever functionality instantiates this as a type, instead, though.
 * Using a meta struct in a struct does not occlude it from the scope. There must be another system to do that, which will be in a separate proposal.

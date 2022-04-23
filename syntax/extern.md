@@ -1,7 +1,7 @@
 # extern #
 A simple hint to the processor that this struct is not directly a part of the overall structure.
 
-```rpl
+```mprl
 extern TYPE NAME {
     # ...
 }

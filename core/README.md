@@ -11,8 +11,10 @@ Proposals for changes to the core library such as changes to existing built-in t
 | Draft  | [list][3]              | list basic type.                          |
 | Early  | [meta][2]              | Meta-programming type.                    |
 | Draft  | [Number forms][1]      | Stringification for number forms.         |
+| Early  | [types][5]             | Define new struct types in MPRL.          |
 
 [1]: number_forms.md
 [2]: meta.md
 [3]: list.md
 [4]: alignment.md
+[5]: types.md

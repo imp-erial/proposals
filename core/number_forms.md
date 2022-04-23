@@ -3,7 +3,7 @@ This is the proposed method for stringifying numbers in a generalized manner. Th
 
 ## comma, period, etc ##
 
-```rpl
+```mprl
 [pattern, ",?###"]
 ```
 
@@ -16,7 +16,7 @@ That is, # pops a digit and ? peeks a digit. Reading right to left, if a ?/# is 
 
 Expanded form, if it needs to be used in conjunction with something else (like *base*), is just:
 
-```rpl
+```mprl
 form {
     pattern: ",?###"
 }
@@ -65,7 +65,7 @@ One can specify a minimized CJK form with:
 
 ### japanese:kanji ###
 
-```rpl
+```mprl
 form {
     number0: 零
     digit1: [一, 10:"", 100:"", 1000:""]
@@ -97,7 +97,7 @@ form {
 
 ### japanese:arabic ###
 
-```rpl
+```mprl
 form {
     digit0: 0
     digit1: 1
@@ -134,7 +134,7 @@ Obviously, these are executed from the largest number to the smallest.
 
 *replace* provides a list of replacements to make in a post-processing stage.
 
-```rpl
+```mprl
 form {
     every1000: M
     every500 : D
