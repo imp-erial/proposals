@@ -33,7 +33,7 @@
 
 ## Summary
 
-The goal of alignment seems to primarily be about have some number of LSBs be 0. Not totally sure where the performance benefits come in on this, but seems to be something with how it goes over the bus.
+The goal of alignment seems to primarily be about having some number of LSBs be 0. Not totally sure where the performance benefits come in on this, but seems to be something with how it goes over the bus.
 
 Aligned elements may not cross byte or bit boundaries unnecessarily. For instance `[string{size:5}, number{size:4}]` if this is self-aligned in a 32-bit architecture, the first element has to cross the boundary but the second does not, thus in order to prevent the second from crossing the boundary unnecessarily, 3 padding bytes are inserted between the two. Though this example is about self-aligned systems, the existence of a boundary seems to be critical in all strategies. Most of the strategy, then, seems to be about inferring this value. Likely, then, most of the configuration for alignment should be around how to find it. There can also be other boundaries, like banks.
 
@@ -41,7 +41,7 @@ Finding exceptional cases to data alignment is markedly difficult.
 
 Padding/slop should be 00s but it's not guaranteed. I wonder if Imperial can handle something more complex than specifying a padding byte (like in strings)? It's possible that it could be directly accessible as a bin or a list of bins (or both).
 
-The configuration may be as simple has having a maximum number of bytes the boundary can contain, then the actual number would be the largest type in the structure up to that amount. Exceptional cases will decide if there's more info...if I can find them.
+The configuration may be as simple as having a maximum number of bytes the boundary can contain, then the actual number would be the largest type in the structure up to that amount. Exceptional cases will decide if there's more info...if I can find them.
 
 [gcc](https://gcc.gnu.org/onlinedocs/gcc-5.2.0/gcc/Type-Attributes.html) offers alignment overrides per member.
 
