@@ -11,4 +11,4 @@ Proposals for new libraries can be made here. The goal can be for inclusion in t
 | Draft  | [String functions][1]  | Types for manipulating strings.           |
 
 [1]: string_functions.md
-[1]: stdnum.md
+[2]: stdnum.md
