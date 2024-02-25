@@ -166,26 +166,26 @@ bin B {
 References can also use a struct as a type and act as a means of propagating cloning, such as in this example:
 
 ```mprl
-data Header {
-    xcount: [number, 2]
-    xindexes: [@Index, @this.xcount]
+bin Header {
+    number count { size: 2 }
+    list indexes { type: @Index, length: @parent{count} }
     # ^ use Index as a type
-    # "this" is a relative reference, referring to "Header"
+    # "parent" is a relative reference, referring to "Header"
 }
 
-data Index {
-    xname: [string, 10]
-    xsize: [number, 2]
+bin Index {
+    string name { size:10 }
+    number size { size:2 }
 }
 
 bin File {
     # These propagate cloning.
-    name: @Index.xname
-    size: @Index.xsize
+    name: @Index{name}
+    size: @Index{size}
 }
 ```
 
-In this example, Index is used as a type in Headers.xindexes, which causes Index to be cloned the specified number of times. Because there is no one Index for File to refer to, File is instead cloned the same number of times as Index with a 1:1 relationship. That is, for every Index there is a File such that Index0 <- File0, Index1 <- File1, ... IndexN <- FileN, and ordered like Index0...IndexN File0...FileN, since the *base* isn't specified.
+In this example, Index is used as a type in Headers{indexes}, which causes Index to be cloned the specified number of times. Because there is no one Index for File to refer to, File is instead cloned the same number of times as Index with a 1:1 relationship. That is, for every Index there is a File such that Index0 <- File0, Index1 <- File1, ... IndexN <- FileN, and ordered like Index0...IndexN File0...FileN, since the *base* isn't specified.
 
 
 ## Link structure ##
@@ -227,19 +227,19 @@ If we set A to "10", B then casts this to the number 10, C interprets that as th
 The established links must be visible for two primary reasons: if a key that is not a reference itself but has references to it must pull data from one of those references, it must be able to; and in Imperial Exchange it must be able to determine what data it can instruct other structs to not export if exporting that data is optional to it. This latter case is about this sort of description:
 
 ```mprl
-data Header {
-    xsomething: [number, 4]
-    xwidth: [number, 2]
-    xheight: [number, 2]
+bin Header {
+    number something { size: 4 }
+    number width { size: 2 }
+    number height { size: 2 }
 }
 
 graphic Image {
-    dimensions: [@Header.xwidth, @Header.xheight]
+    dimensions: [@Header{width}, @Header{height}]
     pixel: 0bw  # 1 bpp, on is black
 }
 ```
 
-In this example, Exchange should export `Image.png` with the graphical information, but `Header.json` should only contain xsomething, not xwidth or xheight, because those two are necessarily exported by Image and can be inferred from that export. This makes it so that when reimporting that data after editing it, one does not need to edit `Header.json` as well when the width or height changes.
+In this example, Exchange should export `Image.png` with the graphical information, but `Header.json` should only contain something, not width or height, because those two are necessarily exported by Image and can be inferred from that export. This makes it so that when reimporting that data after editing it, one does not need to edit `Header.json` as well when the width or height changes.
 
 
 ## Special references ##

@@ -4,16 +4,16 @@ Pointers are addresses to a space in the ROM (for example) which contains some d
 
 ```mprl
 static Level01 {
-    data Metadata {
+    bin Metadata {
         base: $0240dd
-        xtiles: [number, 3]
-        xmap: [number, 3]
-        xwidth: [number, 1]
+        number tiles {size: 3}
+        number map {size: 3}
+        number width {size: 1}
         # ...
     }
 
     tilemap Tiles {
-        base: @{Metadata}.xtiles  # <-- using xtiles as a pointer
+        base: @{Metadata}{tiles}  # <-- using tiles as a pointer
         # ...
     }
 
