@@ -20,6 +20,7 @@ Inside of a reference, it must either begin with a struct name or a substruct su
 * `[` some number or reference `]`
 * a key separator followed by a key name
 * `{` substruct name `}`
+* `/` direct substruct name
 
 Putting it together in eBNF:
 
@@ -30,7 +31,7 @@ Subscriptor = SubscriptKey | SubscriptIndex | SubscriptSubstruct
 
 SubscriptKey = ("." | "-" | "─" | "->") KeyName
 SubscriptIndex = "[" (Number | Reference) "]"
-SubscriptSubstruct = "{" StructName "}"
+SubscriptSubstruct = "{" StructName "}" | "/" StructName
 ```
 
 There may be spacing (including newlines) or even comments between each token.
@@ -108,12 +109,13 @@ static Grandparent {
         name: Walter
 
         static Me {
-            gaga: @{Grandparent}.name      # Gertrude
-            papa: @{Parent}.name           # Walter
-            sisy: @{Sister}.name           # Jenny
-            baby: @{Child}.name            # Kylie
-            lil1: @{Grandchild}.name       # exception
-            nephew: @{Sister}{Child}.name  # Abe
+            gaga: @{Grandparent}.name           # Gertrude
+            papa: @{Parent}.name                # Walter
+            sisy: @{Sister}.name                # Jenny
+            baby: @{Child}.name                 # Kylie
+            lil1: @{Grandchild}.name            # exception
+            nephew: @{Sister}/Child.name        # Abe
+            gnephew: @{Sister}/Grandchild.name  # exception
 
             static Child {
                 name: Kylie
@@ -138,12 +140,20 @@ static Grandparent {
             static Child {
                 name: Abe
             }
+
+            static {
+                static Grandchild {
+                    name: this doesn't work with /
+                }
+            }
         }
     }
 }
 ```
 
 In order to descend, one can use this to select a known parent and use further substruct subscriptors to access those, such as in *nephew*, or use relative references described in the [Special references](#special-references) section.
+
+For the slash subscriptor, it only checks direct children of the current child, and doesn't go into nameless children. It also can't be used as the first element in a reference.
 
 ### Referencing dynamic data ###
 
@@ -168,20 +178,20 @@ References can also use a struct as a type and act as a means of propagating clo
 ```mprl
 bin Header {
     number count { size: 2 }
-    list indexes { type: @Index, length: @parent{count} }
+    list indexes { type: @Index, length: @{count} }
     # ^ use Index as a type
     # "parent" is a relative reference, referring to "Header"
 }
 
 bin Index {
-    string name { size:10 }
-    number size { size:2 }
+    string name { size: 10 }
+    number size { size: 2 }
 }
 
 bin File {
     # These propagate cloning.
-    name: @Index{name}
-    size: @Index{size}
+    name: @Index/name
+    size: @Index/size
 }
 ```
 
@@ -234,7 +244,7 @@ bin Header {
 }
 
 graphic Image {
-    dimensions: [@Header{width}, @Header{height}]
+    dimensions: [@Header/width, @Header/height]
     pixel: 0bw  # 1 bpp, on is black
 }
 ```
@@ -256,8 +266,8 @@ Relative references use a hierarchical model strictly defined by when curly brac
 * `@ggparent` (as in great grandparent) is equivalent to `@parent.parent.parent`
 * You may add as many `g`s as you wish to ascend higher.
 * These are more meant for internal use:
-  - `@姉` refers to `this`'s directly previous sibling, or if none, the parent (possibly the root).
-  - `@妹` refers to `this`'s directly following sibling, or if none, the parent's directly following sibling (and so forth).
+  - `@姉` refers to `this`'s directly previous sibling, if any.
+  - `@妹` refers to `this`'s directly following sibling, if any.
 
 The following is reserved, without definition:
 
