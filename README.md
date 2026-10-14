@@ -1,10 +1,10 @@
-# Proposals #
+# Proposals
 
 Formal proposals for changes to the code, new libraries, etc
 
 Sections are a rough attempt at organization.
 
-## Sections ##
+## Sections
 
 * [Core](core)
 * [Syntax](syntax)
@@ -12,7 +12,7 @@ Sections are a rough attempt at organization.
 * [Standard library](std)
 
 
-## How do I make a new proposal? ##
+## How do I make a new proposal?
 
 Do you have an idea but aren't confident with forming a proper proposal? You may open an [issue](https://github.com/imp-erial/imperial/issues) instead.
 
@@ -26,3 +26,10 @@ For the most part, any valid GFM Markdown will be accepted but keep the followin
 * CAPS can be used similarly to underline but for when it's in a code block.
 * Please use <tt>\`\`\`mprl</tt> to start code blocks for MPRL, even though GitHub doesn't (and likely never will) format them. Do not use indentation for any codeblocks.
 
+## Proposal status glossary
+
+* Early - living document, being edited, not really looking for outside commentary
+* Draft - ready for outside commentary
+* Final - ready for official commentary and review
+* Accepted - has been incorporated into Imperial
+* Rejected - will not be incorporated into Imperial
