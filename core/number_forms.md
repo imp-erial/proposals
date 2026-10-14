@@ -45,7 +45,7 @@ This should work for all digit systems...
 
 *before#* similar but inserts before.
 
-\# may be an actual arabic number or of the form: <u>base</u>**e**<u>digit</u>
+\# may be an actual arabic number or of the form: <ins>base</ins>**e**<ins>digit</ins>
 
 * such that 10e1 is the tens digit in a decimal system
 * this is not meant to be used when the number doesn't represent a multiple of the base. That is, only one base is allowed in a form.
